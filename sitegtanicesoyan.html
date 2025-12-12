@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -147,19 +147,20 @@ h2 { color: orange; font-size: 28px; text-shadow: 0 0 5px orange,0 0 10px orange
 </div>
 
 <header>
-    <img class="logo" src="logo.png"Logo GTA V">
+    <img class="logo" src="logo.png" alt="Logo GTA V">
     <nav>
         <ul>
             <li><a onclick="showPage('accueil', this)" class="active">Accueil</a></li>
             <li><a onclick="showPage('missions', this)">Missions</a></li>
             <li><a onclick="showPage('histoire', this)">Mode Histoire</a></li>
             <li><a onclick="showPage('roleplay', this)">GTA RolePlay</a></li>
+            <li><a onclick="showPage('presentation', this)">Présentation</a></li>
         </ul>
     </nav>
 </header>
 
 <audio id="musiqueGTA" autoplay loop>
-    <source src="https://files.catbox.moe/9r5r2d.mp3" type="audio/mp3">
+    <source src="C:\Users\lunes\Documents\projet site\Grand Theft Auto GTA V   Original Loading Screen Music Theme.mp3">
 </audio>
 <button class="btn-audio" onclick="toggleMusique()">🎵 Musique ON / OFF</button>
 
@@ -224,51 +225,89 @@ h2 { color: orange; font-size: 28px; text-shadow: 0 0 5px orange,0 0 10px orange
 </section>
 
 <!-- GTA ROLEPLAY -->
-  <section id="roleplay" class="page">
-        <h2>🗺️ GTA RolePlay</h2>
-        <div class="items">
-            <div class="card" onclick="showForm('Nice RP')">
-                <img src="https://img.gta5-mods.com/q95/images/colored-map-and-mini-map-for-gta-1-69-update/6aebe5-ColoredMap1jpeg.jpg" alt="Nice RP">
-                <h3>Nice RP</h3>
+<section id="roleplay" class="page">
+    <h2>🗺️ GTA RolePlay</h2>
+    <div class="items">
+        <div class="card" onclick="showForm('Nice RP')">
+            <img src="https://img.gta5-mods.com/q95/images/colored-map-and-mini-map-for-gta-1-69-update/6aebe5-ColoredMap1jpeg.jpg" alt="Nice RP">
+            <h3>Nice RP</h3>
+        </div>
+        <div class="card" onclick="showForm('Paris RP')">
+            <img src="https://www.dexerto.fr/cdn-image/wp-content/uploads/sites/2/2022/04/06/comment-jouer-a-gta-rp.jpg" alt="Paris RP">
+            <h3>Paris RP</h3>
+        </div>
+    </div>
+
+    <!-- Formulaire -->
+    <form id="formRP" class="form-rp">
+        <h3 id="formTitle">Inscription RolePlay</h3>
+
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="age">Âge</label>
+        <input type="number" id="age" name="age" min="0" required>
+
+        <label for="taille">Taille (cm)</label>
+        <input type="number" id="taille" name="taille" min="0" required>
+
+        <label for="numero">Numéro</label>
+        <input type="text" id="numero" name="numero" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Valider</button>
+    </form>
+
+    <div id="zoneCarte"></div>
+</section>
+
+<!-- PRÉSENTATION -->
+<section id="presentation" class="page">
+    <h2>🎥 Présentation</h2>
+
+    <div class="items">
+        <div class="card" style="flex:1; min-width:280px;">
+            <h3>📹 Vidéos GTA V</h3>
+            <p>Regarde des vidéos GTA directement depuis le site.</p>
+
+            <div class="video-wrapper" style="margin-top:10px;">
+                <iframe width="100%" height="230"
+                    src="C:\Users\lunes\Documents\projet site\VIDEO2.mp4"
+                    frameborder="0" allowfullscreen>
+                </iframe>
             </div>
-            <div class="card" onclick="showForm('Paris RP')">
-                <img src="https://www.dexerto.fr/cdn-image/wp-content/uploads/sites/2/2022/04/06/comment-jouer-a-gta-rp.jpg" alt="Paris RP">
-                <h3>Paris RP</h3>
+
+            <div class="video-wrapper" style="margin-top:10px;">
+                <iframe width="100%" height="230"
+                    src="C:\Users\lunes\Documents\projet site\video1.mp4"
+                    frameborder="0" allowfullscreen>
+                </iframe>
             </div>
         </div>
 
-<!-- Formulaire -->
-<form id="formRP" class="form-rp">
-    <h3 id="formTitle">Inscription RolePlay</h3>
+        <div class="card" style="flex:1; min-width:280px;">
+            <h3>🔴 Lives GTA</h3>
+            <p>Regarde des streams GTA V en direct.</p>
 
-    <label for="nom">Nom</label>
-    <input type="text" id="nom" name="nom" required>
+            <div class="video-wrapper" style="margin-top:10px;">
+                <iframe
+                    src="C:\Users\lunes\Documents\projet site\video4.mp4"
+                    width="100%" height="230" allowfullscreen>
+                </iframe>
+            </div>
 
-    <label for="age">Âge</label>
-    <input type="number" id="age" name="age" min="0" required>
+            <div class="video-wrapper" style="margin-top:10px;">
+                <iframe
+                    src="C:\Users\lunes\Documents\projet site\videoooo.mp4"
+                    width="100%" height="230" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <label for="taille">Taille (cm)</label>
-    <input type="number" id="taille" name="taille" min="0" required>
-
-    <label for="numero">Numéro</label>
-    <input type="text" id="numero" name="numero" required>
-
-    <label for="email">E-mail</label>
-    <input type="email" id="email" name="email" required>
-
-    <button type="submit">Valider</button>
-</form>
-
-<!-- Zone où la carte sera générée -->
-<div id="zoneCarte"></div>
-
-
-
-
-
-
-
-       </section>
 </main>
 
 <script>
@@ -313,6 +352,7 @@ function showPersoDetails(perso){
     details.classList.remove("active"); void details.offsetWidth; details.classList.add("active");
 }
 </script>
+
 </body>
 </html>
 
@@ -320,7 +360,6 @@ function showPersoDetails(perso){
 img {
   width: 300px;
   height: 300px;
-  object-fit: contain; /* affiche l'image en entier */
+  object-fit: contain;
 }
-
 </style>
