@@ -1,0 +1,326 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>GTA V - Universe</title>
+<style>
+/* ===== GLOBAL ===== */
+body {
+    background: #0e0e0e;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    transition: background 0.5s;
+}
+
+/* ===== CINEMATIC INTRO ===== */
+#intro {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background:black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    flex-direction:column;
+    animation: introFade 3s forwards;
+}
+#intro img {
+    width:250px;
+    animation: logoZoom 3s forwards;
+}
+#intro h1 {
+    color: orange;
+    font-size:36px;
+    margin-top:20px;
+    text-shadow: 0 0 5px orange,0 0 10px orange,0 0 20px yellow;
+    opacity:0;
+    animation: titleFade 3s forwards 1s;
+}
+@keyframes introFade { 0%{opacity:1;} 80%{opacity:1;} 100%{opacity:0;display:none;} }
+@keyframes logoZoom {0%{transform:scale(0.5);opacity:0;}50%{transform:scale(1.2);opacity:1;}100%{transform:scale(1);opacity:1;}}
+@keyframes titleFade {to{opacity:1;}}
+
+/* ===== HEADER ===== */
+header {
+    background: #111;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid orange;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.logo { height: 60px; }
+nav ul { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+nav a { color: orange; font-size: 18px; cursor: pointer; font-weight: bold; transition: 0.3s; text-decoration: none; }
+nav a:hover, nav a.active { color: yellow; }
+
+/* ===== PAGE ===== */
+.page {
+    display: none;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-in-out;
+}
+.page.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== TITRES NEON ===== */
+h2 { color: orange; font-size: 28px; text-shadow: 0 0 5px orange,0 0 10px orange,0 0 20px yellow; animation: neon 1.5s infinite alternate; }
+@keyframes neon { from{ text-shadow:0 0 5px orange,0 0 10px orange,0 0 20px yellow;} to{ text-shadow:0 0 10px orange,0 0 20px yellow,0 0 30px yellow;} }
+
+/* ===== CARDS ===== */
+.items, .persos { display:flex; gap:20px; flex-wrap:wrap; }
+.card, .card-perso {
+    background:#1a1a1a;
+    border:2px solid orange;
+    padding:10px;
+    border-radius:10px;
+    transition: all 0.3s;
+    cursor: pointer;
+    box-shadow:0 0 5px orange;
+    animation:borderGlow 2s infinite alternate;
+    position: relative;
+}
+@keyframes borderGlow { 0%{box-shadow:0 0 5px orange;} 50%{box-shadow:0 0 15px yellow;} 100%{box-shadow:0 0 5px orange;} }
+.card img, .card-perso img { width:100%; border-radius:8px; object-fit:cover; }
+.card:hover, .card-perso:hover { transform: scale(1.05) rotate(-1deg); border-color: yellow; box-shadow:0 0 15px yellow,0 0 30px orange; }
+.card.police::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:10px; box-shadow: 0 0 20px red, 0 0 40px blue; opacity:0.5; animation: sirene 1s infinite alternate; }
+@keyframes sirene { 0%{box-shadow:0 0 20px red,0 0 40px blue;} 50%{box-shadow:0 0 40px blue,0 0 20px red;} 100%{box-shadow:0 0 20px red,0 0 40px blue;} }
+
+/* ===== BOUTON MUSIQUE ===== */
+.btn-audio {
+    background: orange;
+    color: black;
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    margin:10px 20px;
+    transition:0.3s;
+    animation: neonButton 1.2s infinite alternate;
+}
+.btn-audio:hover { background: yellow; }
+@keyframes neonButton { from{ box-shadow:0 0 5px orange; } to{ box-shadow:0 0 15px yellow; } }
+
+/* ===== DETAILS ===== */
+.details {
+    margin-top:20px;
+    background:#222;
+    border:2px solid orange;
+    border-radius:10px;
+    padding:15px;
+    opacity:0;
+    transform:translateY(20px);
+    transition: all 0.5s ease-in-out;
+}
+.details.active { opacity:1; transform:translateY(0); }
+.details img { max-width:100%; border-radius:10px; margin-bottom:10px; }
+
+/* ===== IMAGE REDUITE ===== */
+.img-perso { width:100px; height:130px; border-radius:8px; object-fit:cover; }
+.img-rp { width:160px; height:90px; border-radius:8px; object-fit:cover; }
+
+/* ===== MINI MAP / RADAR ===== */
+.radar { position:absolute; bottom:10px; right:10px; width:120px; height:120px; border:3px solid orange; border-radius:50%; background:rgba(0,0,0,0.6); box-shadow:0 0 10px orange; animation: radarScan 2s infinite linear; }
+@keyframes radarScan { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){ .items,.persos{flex-direction:column;align-items:center;} .img-rp{width:140px;height:80px;} }
+</style>
+</head>
+<body>
+
+<!-- CINEMATIC INTRO -->
+<div id="intro">
+    <img src="logo.png">
+    <h1>Bienvenue sur GTA V Universe</h1>
+</div>
+
+<header>
+    <img class="logo" src="logo.png"Logo GTA V">
+    <nav>
+        <ul>
+            <li><a onclick="showPage('accueil', this)" class="active">Accueil</a></li>
+            <li><a onclick="showPage('missions', this)">Missions</a></li>
+            <li><a onclick="showPage('histoire', this)">Mode Histoire</a></li>
+            <li><a onclick="showPage('roleplay', this)">GTA RolePlay</a></li>
+        </ul>
+    </nav>
+</header>
+
+<audio id="musiqueGTA" autoplay loop>
+    <source src="https://files.catbox.moe/9r5r2d.mp3" type="audio/mp3">
+</audio>
+<button class="btn-audio" onclick="toggleMusique()">🎵 Musique ON / OFF</button>
+
+<main>
+<!-- ACCUEIL -->
+<section id="accueil" class="page active">
+    <h2>🏠 Accueil</h2>
+    <div class="items">
+        <div class="card" onclick="showPage('missions')">
+            <h3>💰 Missions</h3>
+            <p>Découvre toutes les missions disponibles dans GTA V.</p>
+        </div>
+        <div class="card" onclick="showPage('histoire')">
+            <h3>🎬 Mode Histoire</h3>
+            <p>Explore les personnages et leurs quêtes principales.</p>
+        </div>
+        <div class="card" onclick="showPage('roleplay')">
+            <h3>🗺️ GTA RolePlay</h3>
+            <p>Plonge dans des serveurs RP immersifs et interactifs.</p>
+        </div>
+    </div>
+</section>
+
+<!-- MISSIONS -->
+<section id="missions" class="page">
+    <h2>💰 Missions</h2>
+    <div class="items">
+        <div class="card police" onclick="showMissionDetails('casino')">
+            <h3>🔫 Braquage du Casino</h3>
+            <p>Prépare ton équipe et vole le Diamond Casino.</p>
+        </div>
+        <div class="card" onclick="showMissionDetails('bogdan')">
+            <h3>🌊 Nom de Code : Bogdan</h3>
+            <p>Neutralise le sous-marin russe et sauve la ville.</p>
+        </div>
+        <div class="card" onclick="showMissionDetails('convoy')">
+            <h3>🚛 Convoi Blindé</h3>
+            <p>Intercepte le convoi et vole les lingots.</p>
+        </div>
+    </div>
+    <div id="mission-details" class="details"></div>
+</section>
+
+<!-- MODE HISTOIRE -->
+<section id="histoire" class="page">
+    <h2>🎬 Mode Histoire</h2>
+    <div class="persos">
+        <div class="card-perso" onclick="showPersoDetails('franklin')">
+            <img src="https://static.wikia.nocookie.net/p__/images/7/7a/Franklin_C..webp/revision/latest?cb=20250417205941&path-prefix=protagonist" class="img-perso" alt="Franklin">
+            <h3>Franklin</h3>
+        </div>
+        <div class="card-perso" onclick="showPersoDetails('michael')">
+            <img src="https://i.redd.it/a42m6h3bnnde1.png" class="img-perso" alt="Michael">
+            <h3>Michael</h3>
+        </div>
+        <div class="card-perso" onclick="showPersoDetails('trevor')">
+            <img src="https://fr.egw.news/uploads/content/1/17/1737876257918_resized.png" class="img-perso" alt="Trevor">
+            <h3>Trevor</h3>
+        </div>
+    </div>
+    <div id="perso-details" class="details"></div>
+</section>
+
+<!-- GTA ROLEPLAY -->
+  <section id="roleplay" class="page">
+        <h2>🗺️ GTA RolePlay</h2>
+        <div class="items">
+            <div class="card" onclick="showForm('Nice RP')">
+                <img src="https://img.gta5-mods.com/q95/images/colored-map-and-mini-map-for-gta-1-69-update/6aebe5-ColoredMap1jpeg.jpg" alt="Nice RP">
+                <h3>Nice RP</h3>
+            </div>
+            <div class="card" onclick="showForm('Paris RP')">
+                <img src="https://www.dexerto.fr/cdn-image/wp-content/uploads/sites/2/2022/04/06/comment-jouer-a-gta-rp.jpg" alt="Paris RP">
+                <h3>Paris RP</h3>
+            </div>
+        </div>
+
+<!-- Formulaire -->
+<form id="formRP" class="form-rp">
+    <h3 id="formTitle">Inscription RolePlay</h3>
+
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" name="nom" required>
+
+    <label for="age">Âge</label>
+    <input type="number" id="age" name="age" min="0" required>
+
+    <label for="taille">Taille (cm)</label>
+    <input type="number" id="taille" name="taille" min="0" required>
+
+    <label for="numero">Numéro</label>
+    <input type="text" id="numero" name="numero" required>
+
+    <label for="email">E-mail</label>
+    <input type="email" id="email" name="email" required>
+
+    <button type="submit">Valider</button>
+</form>
+
+<!-- Zone où la carte sera générée -->
+<div id="zoneCarte"></div>
+
+
+
+
+
+
+
+       </section>
+</main>
+
+<script>
+// CINEMATIC INTRO
+window.addEventListener('load', ()=>{ setTimeout(()=>{document.getElementById('intro').style.display='none';},3000); });
+
+// Navigation
+function showPage(pageId, link){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    if(link){document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active')); link.classList.add('active');}
+}
+
+// Audio
+function toggleMusique(){
+    let audio=document.getElementById("musiqueGTA");
+    if(audio.paused) audio.play(); else audio.pause();
+}
+
+// Détails missions
+function showMissionDetails(mission){
+    const details=document.getElementById("mission-details");
+    let html="";
+    if(mission==="casino"){ html=`<img src="https://static.wikia.nocookie.net/gta/images/b/ba/Le_Diamond_Casino_%26_Hotel_-_GTA_Online_%28image_promotionnelle%29.jpg/revision/latest/scale-to-width-down/1000?cb=20190805202756&path-prefix=fr" alt="Braquage du Casino"><h3>🔫 Braquage du Casino</h3><p>Prépare ton équipe, planifie le vol et infiltre le Diamond Casino pour récupérer un maximum d'argent.</p><h4>Quêtes :</h4><ul><li>Planification stratégique</li><li>Infiltration discrète</li><li>Extraction des lingots</li></ul>`;}
+    else if(mission==="bogdan"){ html=`<img src="https://static.wikia.nocookie.net/gta/images/2/2a/Kosatka01.jpg/revision/latest/scale-to-width-down/1000?cb=20210314095354&path-prefix=fr" alt="Nom de Code Bogdan"><h3>🌊 Nom de Code : Bogdan</h3><p>Neutralise le sous-marin russe Kosatka et empêche une attaque sur la ville.</p><h4>Quêtes :</h4><ul><li>Localisation du sous-marin</li><li>Élimination des gardes</li><li>Sabotage des systèmes</li></ul>`;}
+    else if(mission==="convoy"){ html=`<img src="https://static.wikia.nocookie.net/gta/images/e/e9/Securicar_2.jpg/revision/latest?cb=20090813140829&path-prefix=fr" alt="Convoi Blindé"><h3>🚛 Convoi Blindé</h3><p>Intercepte le convoi blindé, surmonte la sécurité et récupère les lingots de valeur.</p><h4>Quêtes :</h4><ul><li>Repérage du convoi</li><li>Plan d'attaque</li><li>Extraction rapide</li></ul>`;}
+    details.innerHTML=html;
+    details.classList.remove("active"); void details.offsetWidth; details.classList.add("active");
+}
+
+// Détails personnages
+function showPersoDetails(perso){
+    const details=document.getElementById("perso-details");
+    let html="";
+    if(perso==="franklin"){
+        html=`<img src="https://static.wikia.nocookie.net/p__/images/7/7a/Franklin_C..webp/revision/latest?cb=20250417205941&path-prefix=protagonist" alt="Franklin"><h3>Franklin</h3><p>🔹 Répossession de voitures<br>🔹 Mission Lamar Davis<br>🔹 Braquage de petite bijouterie<br>🔹 Aide ses amis dans des courses illégales</p><h4>Quêtes :</h4><ul><li>Course clandestine</li><li>Vol de voiture</li><li>Mission de tir</li></ul>`;}
+    else if(perso==="michael"){
+        html=`<img src="https://i.redd.it/a42m6h3bnnde1.png" alt="Michael"><h3>Michael</h3><p>🔹 Braquage Jewel Store<br>🔹 Problèmes familiaux<br>🔹 Mission de kidnapping<br>🔹 Trafic d’armes</p><h4>Quêtes :</h4><ul><li>Planification du braquage</li><li>Problèmes familiaux</li><li>Missions discrètes</li></ul>`;}
+    else if(perso==="trevor"){
+        html=`<img src="https://fr.egw.news/uploads/content/1/17/1737876257918_resized.png" alt="Trevor"><h3>Trevor</h3><p>🔹 Trevor Philips Industries<br>🔹 Chasse au trafic<br>🔹 Vols et attaques explosives<br>🔹 Missions chaotiques à Los Santos</p><h4>Quêtes :</h4><ul><li>Attaque explosive</li><li>Mission aérienne</li><li>Chaos à Los Santos</li></ul>`;}
+    details.innerHTML=html;
+    details.classList.remove("active"); void details.offsetWidth; details.classList.add("active");
+}
+</script>
+</body>
+</html>
+
+<style>
+img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain; /* affiche l'image en entier */
+}
+
+</style>
